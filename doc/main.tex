@@ -1,0 +1,146 @@
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage[english, russian]{babel}
+\usepackage{amsmath, amssymb}
+\usepackage{geometry}
+\geometry{a4paper, margin=2.5cm}
+\usepackage{hyperref}  % для кликабельных ссылок
+
+\title{Прецессирующий волчок}
+\date{January 2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+В работе рассматривается динамика осесимметричного волчка, опирающегося остриём на идеально гладкую горизонтальную плоскость. 
+В отличие от классического волчка Лагранжа, точка опоры не фиксирована, что допускает скольжение ножки. 
+\end{abstract}
+
+\section{Введение}
+
+Волчок --- это детская игрушка, разновидность гироскопа, осесимметричное твёрдое тело. 
+При достаточно быстром вращении вокруг своей вертикальной оси волчок способен сопротивляться опрокидыванию.
+
+Волчок Лагранжа --- это волчок, у которого точка опоры жёстко закреплена на шарнире. 
+В этой точке возникает сила реакции, которая удерживает ножку на месте, не давая ей скользить. 
+Из-за этого центр масс волчка движется по сфере. 
+Известно, что эта система при отсутствии трения является интегрируемой, а волчок способен бесконечно долго вращаться и не падать при достаточно сильной начальной закрутке. 
+Подробное описание этих свойств приведено в \href{https://www.math.toronto.edu/khesin/biblio/GoldsteinPooleSafkoClassicalMechanics.pdf}{классическом учебнике Гольдштейна}.
+
+Однако в данной работе рассматривается иная задача. 
+Моделируется волчок, ножка которого опирается не на закреплённый шарнир, а на идеально гладкую горизонтальную поверхность, что позволяет ножке скользить по ней при вращении, а центру масс --- оставаться на месте. 
+Сила реакции опоры рассчитывается таким образом, чтобы избежать подпрыгиваний волчка и проваливаний ножки под поверхность. 
+Можно сказать, что ножка рассматриваемого волчка закреплена по вертикальной оси.
+
+\section{Описание системы}
+
+Для моделирования движения волчка необходимо определить постоянные и динамические величины системы.
+
+\subsection{Постоянные величины}
+
+Волчок характеризуется следующими постоянными параметрами:
+\begin{itemize}
+\item масса $m$,
+\item тензор инерции относительно системы координат, жёстко связанной с телом:
+\[
+\mathbf{I}_0 = \begin{pmatrix}
+I_{0x} & 0 & 0 \\
+0 & I_{0y} & 0 \\
+0 & 0 & I_{0z}
+\end{pmatrix}, 
+\quad \text{причём} \quad I_{0y} = I_{0x}
+\]
+(волчок симметричен и вытянут относительно главной оси).
+\end{itemize}
+
+\subsection{Динамические величины}
+
+Состояние волчка в текущий момент времени описывается:
+\begin{itemize}
+\item положением центра масс $\mathbf{X}$,
+\item скоростью центра масс $\mathbf{v}$,
+\item угловой скоростью $\boldsymbol{\omega}$,
+\item внешними силами: $\mathbf{F}_g = m\mathbf{g}$ (сила тяжести) и $\mathbf{N}$ (сила реакции опоры),
+\item матрицей поворота $\mathbf{R}$,
+\item моментом сил $\boldsymbol{\tau}$,
+\item моментом импульса $\mathbf{L}$,
+\item тензором инерции в мировой системе координат $\mathbf{I}$.
+\end{itemize}
+
+Система дифференциальных уравнений имеет вид:
+
+\subsection{Сила реакции опоры}
+
+Сила реакции опоры действует на острие ножки волчка. 
+Чтобы исключить вертикальные перемещения точки касания (подпрыгивание или проваливание), необходимо выбрать $\mathbf{N}$ так, чтобы вертикальное ускорение этой точки равнялось нулю.
+
+Пусть $\mathbf{r}_0''$ --- вектор от центра масс к ножке в связанной системе координат. 
+Введём обозначение $\boldsymbol{\rho} = \mathbf{R} \mathbf{r}_0''$. 
+Тогда положение точки контакта в инерциальной системе:
+\begin{equation}
+\mathbf{r}_p = \boldsymbol{\rho} + \mathbf{r}_c
+\end{equation}
+
+Дифференцируя по времени:
+\begin{equation}
+\dot{\mathbf{r}}_p = \mathbf{v}_c + \boldsymbol{\omega} \times \boldsymbol{\rho}
+\end{equation}
+
+Второе дифференцирование даёт:
+\begin{equation}
+\ddot{\mathbf{r}}_p = \mathbf{a}_c + \dot{\boldsymbol{\omega}} \times \boldsymbol{\rho} + \boldsymbol{\omega} \times (\boldsymbol{\omega} \times \boldsymbol{\rho}) \label{eq:rp_ddot}
+\end{equation}
+
+На волчок действуют сила реакции $\mathbf{N} = N_z \hat{\mathbf{z}}$ (горизонтальные составляющие отсутствуют из-за гладкости поверхности) и сила тяжести $m\mathbf{g} = -mg\hat{\mathbf{z}}$. 
+По второму закону Ньютона для центра масс:
+\begin{equation}
+\mathbf{a}_c = -g \hat{\mathbf{z}} + \frac{N_z}{m} \hat{\mathbf{z}} \label{eq:ac}
+\end{equation}
+
+Выразим производную угловой скорости. 
+Используя $\mathbf{L} = \mathbf{I} \boldsymbol{\omega}$ и $\dot{\mathbf{L}} = \boldsymbol{\tau}$, получаем:
+\begin{equation}
+\dot{\boldsymbol{\omega}} = \dot{\mathbf{I}}^{-1} \mathbf{L} + \mathbf{I}^{-1} \boldsymbol{\tau} \label{eq:omega_dot}
+\end{equation}
+
+Учитывая, что $\mathbf{I} = \mathbf{R} \mathbf{I}_0 \mathbf{R}^T$, производная обратного тензора инерции имеет вид:
+\begin{equation}
+\dot{\mathbf{I}}^{-1} = \boldsymbol{\omega}^* \mathbf{I}^{-1} + \mathbf{I}^{-1} \boldsymbol{\omega}^{*T} \label{eq:invI_dot}
+\end{equation}
+где $\boldsymbol{\omega}^*$ --- кососимметрическая матрица, соответствующая вектору $\boldsymbol{\omega}$.
+
+Момент силы реакции относительно центра масс:
+\begin{equation}
+\boldsymbol{\tau} = \boldsymbol{\rho} \times \mathbf{N} = N_z (\boldsymbol{\rho} \times \hat{\mathbf{z}}) \label{eq:tau}
+\end{equation}
+
+Подставляя \eqref{eq:invI_dot} и \eqref{eq:tau} в \eqref{eq:omega_dot}, находим:
+\begin{equation}
+\dot{\boldsymbol{\omega}} = \bigl( \boldsymbol{\omega}^* \mathbf{I}^{-1} + \mathbf{I}^{-1} \boldsymbol{\omega}^{*T} \bigr) \mathbf{L} + N_z \mathbf{I}^{-1} (\boldsymbol{\rho} \times \hat{\mathbf{z}}) \label{eq:omega_dot_final}
+\end{equation}
+
+Теперь подставим \eqref{eq:ac} и \eqref{eq:omega_dot_final} в \eqref{eq:rp_ddot} и спроецируем на вертикальную ось $z$:
+\begin{equation}
+\ddot{z}_p = -g + \frac{N_z}{m} + \Biggl[ \Bigl( \bigl( \boldsymbol{\omega}^* \mathbf{I}^{-1} + \mathbf{I}^{-1} \boldsymbol{\omega}^{*T} \bigr) \mathbf{L} \Bigr) \times \boldsymbol{\rho} + N_z \bigl( \mathbf{I}^{-1} (\boldsymbol{\rho} \times \hat{\mathbf{z}}) \bigr) \times \boldsymbol{\rho} + \boldsymbol{\omega} \times (\boldsymbol{\omega} \times \boldsymbol{\rho}) \Biggr]_z \label{eq:z_ddot}
+\end{equation}
+
+Группируя члены с $N_z$ и перенося остальные в правую часть, получаем:
+\begin{equation}
+N_z \left( \frac{1}{m} + \Bigl[ \bigl( \mathbf{I}^{-1} (\boldsymbol{\rho} \times \hat{\mathbf{z}}) \bigr) \times \boldsymbol{\rho} \Bigr]_z \right) = g - \Bigl[ \Bigl( \bigl( \boldsymbol{\omega}^* \mathbf{I}^{-1} + \mathbf{I}^{-1} \boldsymbol{\omega}^{*T} \bigr) \mathbf{L} \Bigr) \times \boldsymbol{\rho} + \boldsymbol{\omega} \times (\boldsymbol{\omega} \times \boldsymbol{\rho}) \Bigr]_z
+\end{equation}
+
+Отсюда выражаем силу реакции опоры:
+\begin{equation}
+\boxed{N_z = \dfrac{g - \left[ \left( \bigl( \boldsymbol{\omega}^* \mathbf{I}^{-1} + \mathbf{I}^{-1} \boldsymbol{\omega}^{*T} \bigr) \mathbf{L} \right) \times \boldsymbol{\rho} + \boldsymbol{\omega} \times (\boldsymbol{\omega} \times \boldsymbol{\rho}) \right]_z}{\dfrac{1}{m} + \left[ \left( \mathbf{I}^{-1} (\boldsymbol{\rho} \times \hat{\mathbf{z}}) \right) \times \boldsymbol{\rho} \right]_z}}
+\end{equation}
+
+Данное выражение позволяет вычислять силу реакции в каждый момент времени, обеспечивая выполнение кинематического условия отсутствия вертикального перемещения точки контакта.
+
+\begin{thebibliography}{99}
+\bibitem{goldstein} Goldstein H., Poole C., Safko J. \href{https://www.math.toronto.edu/khesin/biblio/GoldsteinPooleSafkoClassicalMechanics.pdf}{\textit{Classical Mechanics}}. 3rd ed., Addison-Wesley, 2001. 
+
+\end{thebibliography}
+
+\end{document}
