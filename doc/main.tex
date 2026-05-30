@@ -20,23 +20,22 @@
 
 \section{Введение}
 
-Волчок --- это детская игрушка, разновидность гироскопа, осесимметричное твёрдое тело. 
+Волчок --- это разновидность гироскопа, осесимметричное твёрдое тело. 
 При достаточно быстром вращении вокруг своей вертикальной оси волчок способен сопротивляться опрокидыванию.
 
 Волчок Лагранжа --- это модель, в которой точка опоры жёстко закреплена на шарнире. 
 В этой точке возникает сила реакции, которая удерживает ножку на месте, не давая ей скользить. 
 Из-за этого центр масс волчка движется по сфере. 
-Известно, что эта система при отсутствии трения является интегрируемой, а волчок способен бесконечно долго вращаться и не падать при достаточно сильной начальной закрутке. 
+Известно, что эта система является интегрируемой, а волчок способен бесконечно долго вращаться и не падать при достаточно сильной начальной закрутке. 
 Подробное описание этих свойств приведено в классическом учебнике Гольдштейна [1].
 
-Еще одним примером интегрируемой системы является Волчок Эйлера --- это модель, в которой точка опоры является и центром масс волчка. Волчок вращается вокруг этой неподвижной точки и на него не действует никаких внешних сил.
+Еще одним примером интегрируемой системы является волчок Эйлера --- это модель, в которой волчок находится в невесомости и вращается вокруг своего неподвижного центра масс.
 
-Также существуют работы, учитывающие трение в ножке волчка. В работе [2] предсказывается стабилизация или падение изначально наклоненного, закрученного волчка, с помощью системы инерциальных моментов действующих на волчок. 
+ В работе [2] оцениваются необходимые условия для стабилизации изначально наклоненного, закрученного незакрепленного на плоскости волчка, с учетом трения. 
 
 В отличие от указанных подходов, в данной работе рассматривается иная задача. 
-Моделируется волчок, ножка которого опирается не на закреплённый шарнир, а на идеально гладкую горизонтальную поверхность, что позволяет ножке скользить по ней при вращении в силу отсутствия сил трения в ножке, а центру масс --- оставаться на месте. 
-Сила реакции опоры рассчитывается таким образом, чтобы избежать подпрыгиваний волчка и проваливаний ножки под поверхность. 
-Можно сказать, что ножка рассматриваемого волчка закреплена по вертикальной оси.
+Моделируется волчок, ножка которого опирается на идеально гладкую горизонтальную поверхность, что позволяет ножке скользить по ней при вращении в силу отсутствия сил трения в ножке, а проекции центра масс на плоскость --- оставаться на месте. 
+Сила реакции опоры рассчитывается таким образом, чтобы избежать вертикального движения точки касания. 
 
 \section{Описание системы}
 
@@ -59,21 +58,139 @@ I_{0x} & 0 & 0 \\
 (волчок симметричен и вытянут относительно главной оси).
 \end{itemize}
 
+
+
+
 \subsection{Динамические величины}
 
-Состояние волчка в текущий момент времени описывается:
+
+\subsubsection{Переменные состояния}
+Вектор состояния системы, эволюция которого описывается дифференциальными уравнениями, включает:
 \begin{itemize}
-\item положением центра масс $\mathbf{X}$,
-\item скоростью центра масс $\mathbf{v}$,
-\item угловой скоростью $\boldsymbol{\omega}$,
-\item внешними силами: $\mathbf{F}_g = m\mathbf{g}$ (сила тяжести) и $\mathbf{N}$ (сила реакции опоры),
-\item матрицей поворота $\mathbf{R}$,
-\item моментом сил $\boldsymbol{\tau}$,
-\item моментом импульса $\mathbf{L}$,
-\item тензором инерции в мировой системе координат $\mathbf{I}$.
+\item вектор положения центра масс в мировой системе координат $\mathbf{r_c(t)}$,
+\item импульс $\mathbf{P}(t)$,
+\item момент импульса $\mathbf{L}$,
+\item матрицу поворота:
+
+\[
+\mathbf{R(t)} = \begin{pmatrix}
+r_{xx} & r_{yx} & r_{zx} \\
+r_{xy} & r_{yy} & r_{zy} \\
+r_{xz} & r_{yz} & r_{zz}
+\end{pmatrix}
+\]
+Физический смысл матрицы R(t) заключается в том, что первый столбец R(t) показывает направление оси x твердого тела при преобразовании в мировую систему координат в момент времени t. Аналогично, второй и третий столбцы матрицы R(t) представляют собой направления осей y и z твердого тела в мировой системе координат в момент времени t.
+
+\[
+\dot{\mathbf{R}}(t) =
+\begin{pmatrix}
+\boldsymbol{\omega}(t) \times 
+\begin{pmatrix}
+r_{xx} \\ r_{xy} \\ r_{xz}
+\end{pmatrix} &
+\boldsymbol{\omega}(t) \times 
+\begin{pmatrix}
+r_{yx} \\ r_{yy} \\ r_{yz}
+\end{pmatrix} &
+\boldsymbol{\omega}(t) \times 
+\begin{pmatrix}
+r_{zx} \\ r_{zy} \\ r_{zz}
+\end{pmatrix}
+\end{pmatrix}
+\]
+где ${\omega}(t)$ --- вектор угловой скорости.
+
+Чтобы упростить выражение, рассмотрим два вектора 
+\[
+a =  \begin{pmatrix}
+a_{x} \\ a_{y} \\ a_{z}
+\end{pmatrix} &
+b =  \begin{pmatrix}
+b_{x} \\ b_{y} \\ b_{z}
+\end{pmatrix}
+\]
+
+Тогда
+\[
+a \times b = \begin{pmatrix}
+a_{y} \cdot b_{z} - b_{y} \cdot a_{z}\\
+- a_{x} \cdot b_{z} + b_{x} \cdot a_{z}\\
+a_{x} \cdot b_{y} - b_{x} \cdot a_{y}
+\end{pmatrix}
+\]
+
+Введем матрицу
+\[
+a^* = \begin{pmatrix}
+0      & -a_{z} & a_{y}\\
+a_{z}  &    0   & -a_{x}\\
+-a_{y} & a_{x}  &   0
+\end{pmatrix}
+\]
+Таким образом
+\[
+a^*b = \begin{pmatrix}
+a_{y} \cdot b_{z} - b_{y} \cdot a_{z}\\
+- a_{x} \cdot b_{z} + b_{x} \cdot a_{z}\\
+a_{x} \cdot b_{y} - b_{x} \cdot a_{y}
+\end{pmatrix} = 
+a \times b
+\]
+$a^*$ --- это кососимметрическая матрица, соответствующая вектору $a$.
+
+Теперь производную матрицы поворота по времени можно представить в виде
+\[
+\dot{\mathbf{R}}(t) = \boldsymbol{\omega}(t)^* {\mathbf{R}}(t)
+\]
+\end{itemize}
+
+
+\subsubsection{Вычисляемые величины}
+Остальные величины выражаются через переменные состояния:
+\begin{itemize}
+\item скорость центра масс
+\[
+\mathbf{v}(t) = \frac{\mathbf{P}(t)}{m}.
+\]
+
+\item угловая скорость
+\[
+\boldsymbol{\omega}(t) = \mathbf{I}^{-1}(t) \, \mathbf{L}(t).
+\]
+
+\item внешние силы: сила тяжести $\mathbf{F}_g(t) = m\mathbf{g}$ и сила реакции опоры $\mathbf{N(t)}$ (вычисление описано далее),
+
+\item момент сил,
+\[\boldsymbol{\tau}(t) = \mathbf{r}(t) \times \mathbf{N}(t)\]
+где $\mathbf{r}(t)$ --- вектор от ножки волчка к центру масс.
+\item тензор инерции в мировой системе координат
+\[
+\mathbf{I}(t) = \mathbf{R}(t) \, \mathbf{I}_0 \, \mathbf{R}^T(t).
+\]
 \end{itemize}
 
 Система дифференциальных уравнений имеет вид:
+
+
+\[
+\frac{d}{dt}\begin{pmatrix}
+r_c(t)\\
+R(t)\\
+L(t)\\
+P(t)\\
+\end{pmatrix} = 
+\begin{pmatrix}
+v(t)\\
+\omega(t)^*R(t)\\
+\tau(t)\\
+F(t)\\
+\end{pmatrix}
+\]
+
+
+
+% разобраться с r ro r``  рисунок
+
 
 \subsection{Сила реакции опоры}
 
@@ -97,10 +214,10 @@ I_{0x} & 0 & 0 \\
 \ddot{\mathbf{r}}_p = \mathbf{a}_c + \dot{\boldsymbol{\omega}} \times \boldsymbol{\rho} + \boldsymbol{\omega} \times (\boldsymbol{\omega} \times \boldsymbol{\rho}) \label{eq:rp_ddot}
 \end{equation}
 
-На волчок действуют сила реакции $\mathbf{N} = N_z \hat{\mathbf{z}}$ (горизонтальные составляющие отсутствуют из-за гладкости поверхности) и сила тяжести $m\mathbf{g} = -mg\hat{\mathbf{z}}$. 
+На волчок действуют сила реакции $\mathbf{N} = N \hat{\mathbf{z}}$ (горизонтальные составляющие отсутствуют из-за гладкости поверхности) и сила тяжести $m\mathbf{g} = -mg\hat{\mathbf{z}}$. 
 По второму закону Ньютона для центра масс:
 \begin{equation}
-\mathbf{a}_c = -g \hat{\mathbf{z}} + \frac{N_z}{m} \hat{\mathbf{z}} \label{eq:ac}
+\mathbf{a}_c = -g \hat{\mathbf{z}} + \frac{N}{m} \hat{\mathbf{z}} \label{eq:ac}
 \end{equation}
 
 Выразим производную угловой скорости. 
@@ -115,37 +232,135 @@ I_{0x} & 0 & 0 \\
 \end{equation}
 где $\boldsymbol{\omega}^*$ --- кососимметрическая матрица, соответствующая вектору $\boldsymbol{\omega}$.
 
-Момент силы реакции относительно центра масс:
+Момент силы реакции опоры относительно центра масс:
 \begin{equation}
 \boldsymbol{\tau} = \boldsymbol{\rho} \times \mathbf{N} = N_z (\boldsymbol{\rho} \times \hat{\mathbf{z}}) \label{eq:tau}
 \end{equation}
 
 Подставляя \eqref{eq:invI_dot} и \eqref{eq:tau} в \eqref{eq:omega_dot}, находим:
 \begin{equation}
-\dot{\boldsymbol{\omega}} = \bigl( \boldsymbol{\omega}^* \mathbf{I}^{-1} + \mathbf{I}^{-1} \boldsymbol{\omega}^{*T} \bigr) \mathbf{L} + N_z \mathbf{I}^{-1} (\boldsymbol{\rho} \times \hat{\mathbf{z}}) \label{eq:omega_dot_final}
+\dot{\boldsymbol{\omega}} = \bigl( \boldsymbol{\omega}^* \mathbf{I}^{-1} + \mathbf{I}^{-1} \boldsymbol{\omega}^{*T} \bigr) \mathbf{L} + N \mathbf{I}^{-1} (\boldsymbol{\rho} \times \hat{\mathbf{z}}) \label{eq:omega_dot_final}
 \end{equation}
+
 
 Теперь подставим \eqref{eq:ac} и \eqref{eq:omega_dot_final} в \eqref{eq:rp_ddot} и спроецируем на вертикальную ось $z$:
 \begin{equation}
-\ddot{z}_p = -g + \frac{N_z}{m} + \Biggl[ \Bigl( \bigl( \boldsymbol{\omega}^* \mathbf{I}^{-1} + \mathbf{I}^{-1} \boldsymbol{\omega}^{*T} \bigr) \mathbf{L} \Bigr) \times \boldsymbol{\rho} + N_z \bigl( \mathbf{I}^{-1} (\boldsymbol{\rho} \times \hat{\mathbf{z}}) \bigr) \times \boldsymbol{\rho} + \boldsymbol{\omega} \times (\boldsymbol{\omega} \times \boldsymbol{\rho}) \Biggr]_z \label{eq:z_ddot}
+\ddot{r}_p = -g + \frac{N}{m} + \Biggl[ \Bigl( \bigl( \boldsymbol{\omega}^* \mathbf{I}^{-1} + \mathbf{I}^{-1} \boldsymbol{\omega}^{*T} \bigr) \mathbf{L} \Bigr) \times \boldsymbol{\rho} + N \bigl( \mathbf{I}^{-1} (\boldsymbol{\rho} \times \hat{\mathbf{z}}) \bigr) \times \boldsymbol{\rho} + \boldsymbol{\omega} \times (\boldsymbol{\omega} \times \boldsymbol{\rho}) \Biggr] \cdot z \label{eq:z_ddot}
 \end{equation}
 
 Группируя члены с $N_z$ и перенося остальные в правую часть, получаем:
 \begin{equation}
-N_z \left( \frac{1}{m} + \Bigl[ \bigl( \mathbf{I}^{-1} (\boldsymbol{\rho} \times \hat{\mathbf{z}}) \bigr) \times \boldsymbol{\rho} \Bigr]_z \right) = g - \Bigl[ \Bigl( \bigl( \boldsymbol{\omega}^* \mathbf{I}^{-1} + \mathbf{I}^{-1} \boldsymbol{\omega}^{*T} \bigr) \mathbf{L} \Bigr) \times \boldsymbol{\rho} + \boldsymbol{\omega} \times (\boldsymbol{\omega} \times \boldsymbol{\rho}) \Bigr]_z
+N \left( \frac{1}{m} + \Bigl[ \bigl( \mathbf{I}^{-1} (\boldsymbol{\rho} \times \hat{\mathbf{z}}) \bigr) \times \boldsymbol{\rho} \Bigr] \cdot z \right) = g - \Bigl[ \Bigl( \bigl( \boldsymbol{\omega}^* \mathbf{I}^{-1} + \mathbf{I}^{-1} \boldsymbol{\omega}^{*T} \bigr) \mathbf{L} \Bigr) \times \boldsymbol{\rho} + \boldsymbol{\omega} \times (\boldsymbol{\omega} \times \boldsymbol{\rho}) \Bigr] \cdot z
 \end{equation}
 
 Отсюда выражаем силу реакции опоры:
 \begin{equation}
-N_z = \dfrac{g - \left[ \left( \bigl( \boldsymbol{\omega}^* \mathbf{I}^{-1} + \mathbf{I}^{-1} \boldsymbol{\omega}^{*T} \bigr) \mathbf{L} \right) \times \boldsymbol{\rho} + \boldsymbol{\omega} \times (\boldsymbol{\omega} \times \boldsymbol{\rho}) \right]_z}{\dfrac{1}{m} + \left[ \left( \mathbf{I}^{-1} (\boldsymbol{\rho} \times \hat{\mathbf{z}}) \right) \times \boldsymbol{\rho} \right]_z}
+N = \dfrac{g - \left[ \left( \bigl( \boldsymbol{\omega}^* \mathbf{I}^{-1} + \mathbf{I}^{-1} \boldsymbol{\omega}^{*T} \bigr) \mathbf{L} \right) \times \boldsymbol{\rho} + \boldsymbol{\omega} \times (\boldsymbol{\omega} \times \boldsymbol{\rho}) \right] \cdot z}{\dfrac{1}{m} + \left[ \left( \mathbf{I}^{-1} (\boldsymbol{\rho} \times \hat{\mathbf{z}}) \right) \times \boldsymbol{\rho} \right] \cdot z}
 \end{equation}
 
 Данное выражение позволяет вычислять силу реакции в каждый момент времени, обеспечивая выполнение кинематического условия отсутствия вертикального перемещения точки контакта.
+
+\subsection{Численный метод} 
+
+Как известно одним из свойств матрицы поворота является ортогональность $\mathbf{R}(t)\,\mathbf{R}^T(t) = \mathbf{I}$. При численном интегрировании уравнения 
+\[
+\dot{\mathbf{R}}(t) = \boldsymbol{\omega}(t)^* {\mathbf{R}}(t)
+\]
+в матрице ${\mathbf{R}}(t)$ неизбежно начинают накапливаться численные ошибки, что делает матрицу поворота не ортогональной и в последствии искажает влияние ${\mathbf{R}}(t)$ на тело.
+
+Чтобы избежать этого можно периодически использовать метод ортогонализации Грама — Шмидта, но этот подход вычислительно затратный и сам может вносить дополнительные численные ошибки в систему.
+
+В данной работе вместо матрицы поворота для описания ориентации используется 
+кватернион $\mathbf{q} = [s,\;\mathbf{v}]$ — четырёхмерный вектор единичной длины, 
+представляющий вращение. В отличие от матрицы, избыточность кватерниона минимальна 
+(4 параметра вместо 9), а условие корректности сводится к одному равенству 
+$s^2 + v_x^2 + v_y^2 + v_z^2 = 1$. При накоплении численных ошибок кватернион 
+достаточно перенормировать:
+\[
+\mathbf{q} \leftarrow \frac{\mathbf{q}}{\|\mathbf{q}\|}.
+\]
+Матрица поворота $\mathbf{R}(t)$, необходимая для вычисления тензора инерции 
+в мировой системе, вычисляется из кватерниона на каждом шаге. 
+Уравнение эволюции кватерниона имеет вид
+\[
+\dot{\mathbf{q}}(t) = \tfrac{1}{2}\boldsymbol{\omega}(t)\mathbf{q}(t),
+\]
+где умножение понимается как кватернионное произведение $[0,\boldsymbol{\omega}(t)]$ и $\mathbf{q}(t)$.
+
+Подробное обсуждение преимуществ кватернионов перед матрицами поворота 
+и вывод уравнения $\dot{\mathbf{q}}(t)$ приведены в работе Бараффа [3].
+
+
+\begin{verbatim}
+struct quaternion
+{
+    double s;
+    double v[3];
+};
+\end{verbatim}
+
+% !уточнение системы дифференциальныхуравнений!
+
+Теперь можно описать структуру, которая будет хранить состояние волчка:
+\begin{verbatim}
+struct Top
+{
+    /* Constant quantities */
+    const double m;            /* mass */
+    const double I0[3][3];     /* inertia tensor in body-space */
+    const double inv_I0[3][3]; /* inverse of I0 */
+    const double r0[3];        /* r`` */
+    double r[3];               /* r` = R*r`` */
+    
+
+    /* State variables */
+    double x[3];               /* x(t) */
+    quaternion q;              /* q(t) */
+    double P[3];               /* P(t) */
+    double L[3];               /* L(t) */
+
+    /* Derived quantities (auxiliary variables) */
+    double inv_I[3][3];        /* inverse of tensor inertia in world-space */
+    double R[3][3];            /* R(t) */
+    double w[3];               /* w(t) */
+    double v[3];               /* v(t) */
+
+    /* Computed quantities */
+    double F[3];               /* F(t) */
+    double torque[3];          /* torque(t) */
+
+};
+\end{verbatim}
+
+
+Для численного решения системы обыкновенных дифференциальных уравнений используется явный метод 
+Рунге–Кутты пятого порядка, коэффициенты которого взяты из работы 
+Дорманда–Принса [4]. Это та же схема, что лежит в основе 
+известного вложенного метода DOPRI5(4), но без использования оценки 
+погрешности и адаптивного управления шагом — в данной работе интегрирование 
+ведётся с постоянным шагом $\Delta t$.
+
+
+
+
+
+
+
 
 \begin{thebibliography}{99}
 \bibitem{goldstein} Goldstein H., Poole C., Safko J. \href{https://www.math.toronto.edu/khesin/biblio/GoldsteinPooleSafkoClassicalMechanics.pdf}{\textit{Classical Mechanics}}. 3rd ed., Addison-Wesley, 2001. 
 
 \bibitem{Ryspek Usubamatov}Ryspek Usubamatov \href{https://link.springer.com/book/10.1007/978-3-030-99213-2}{\textit{Theory of Gyroscopic Effects for Rotating Objects}} 
+
+\bibitem{David Baraff}David Baraff \href{https://www.cs.cmu.edu/~baraff/sigcourse/notesd1.pdf}{\textit{An Introduction to Physically Based Modeling:
+Rigid Body Simulation I—Unconstrained Rigid Body
+Dynamics}} 
+\bibitem{DormandPrince}
+J.R. Dormand, P.J. Prince.
+\href{https://doi.org/10.1016/0771-050X(80)90013-3}{\textit{A family of embedded Runge-Kutta formulae}}.
+J. Comput. Appl. Math., 6(1):19--26, 1980.
+
+
 
 \end{thebibliography}
 
